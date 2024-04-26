@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Feedback Hub",
   description: "Real feedback from real people.",
+  icons: {
+    icon: "https://img.icons8.com/doodle/480/class-dojo.png",
+  },
 };
 
 interface RootLayoutProps {
