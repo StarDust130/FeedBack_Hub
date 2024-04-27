@@ -89,7 +89,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: true,
-        message: "User Registered Successfully 🥳",
+        message: "User Registered Successfully",
       },
       { status: 201 }
     );
