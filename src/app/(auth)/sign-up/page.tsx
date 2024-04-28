@@ -30,7 +30,10 @@ const SignUp = () => {
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const debounced = useDebounceCallback(setUsername, 300);
+  const debounced = useDebounceCallback((value: string) => {
+    setUsername(value);
+  }, 300);
+
   const { toast } = useToast();
   const router = useRouter();
 
@@ -46,30 +49,32 @@ const SignUp = () => {
 
   useEffect(() => {
     const checkUsernameUnique = async () => {
-      if (username) {
-        setIsCheckingUsername(true);
-        setUsernameMessage("");
+      if (!username) {
+        setUsernameMessage(""); // Clear message if username is empty
         return;
       }
+
+      setIsCheckingUsername(true); // Start loader
+
       try {
         const response = await axios.get(
-          `/api/check-username-unique?username=${username}`
+          `/api/check-username-unique?username=${encodeURIComponent(username)}`
         );
-        console.log("response from sign-in", response);
-        let message = response.data.message;
 
         setUsernameMessage(response.data.message);
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse>;
         setUsernameMessage(
-          axiosError.response?.data.message ?? "Error checking username 😢"
+          axiosError.response?.data.message ?? "Error checking username"
         );
       } finally {
-        setIsCheckingUsername(false);
+        setIsCheckingUsername(false); // Stop loader
       }
     };
+
+    // Invoke the check function when username changes
     checkUsernameUnique();
-  }, [username]);
+  }, [username]); // Only re-run effect if username changes
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
@@ -121,6 +126,7 @@ const SignUp = () => {
                     />
                   </FormControl>
                   {isCheckingUsername && <Loader className="animate-spin" />}
+
                   {!isCheckingUsername && usernameMessage && (
                     <p
                       className={`text-sm ${
