@@ -147,7 +147,7 @@ function UserDashboard() {
             type="text"
             value={profileUrl}
             disabled
-            className="input input-bordered w-full p-2 mr-2"
+            className="bg-white text-black rounded-lg cursor-text w-full p-2 mr-2"
           />
           <Button onClick={copyToClipboard}>
             <Copy />
