@@ -100,8 +100,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-300 ">
-      <div className="w-full max-w-md p-8 bg-white space-y-8  rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen  ">
+      <div className="w-full max-w-md p-8  space-y-8 border   rounded-lg shadow-md">
         <div className="text-center text-4xl font-bold">
           {" "}
           Join FeedBack Hub{" "}
