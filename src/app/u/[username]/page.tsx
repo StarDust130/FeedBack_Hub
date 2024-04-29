@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CardHeader, CardContent, Card } from "@/components/ui/card";
@@ -24,6 +24,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { msgSchema } from "@/schemas/msgSchema";
+import { getSession } from "next-auth/react";
 
 const specialChar = "||";
 
@@ -49,6 +50,7 @@ export default function SendMessage() {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof msgSchema>) => {
     setIsLoading(true);
@@ -73,6 +75,20 @@ export default function SendMessage() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const isUserLoggedInFun = async () => {
+    // Get the user's session
+    const session = await getSession();
+
+    // Check if the session exists and is valid
+    if (session) {
+      setIsUserLoggedIn(true);
+      return true;
+    } else {
+      setIsUserLoggedIn(false);
+      return false;
     }
   };
 
@@ -115,24 +131,39 @@ export default function SendMessage() {
         </form>
       </Form>
 
-      <div className="space-y-4 my-8">
-        <div className="space-y-2">
+      <div className="space-y-4 my-8 ">
+        <div className="space-y-2 ">
           <p>Click on any message below to select it.</p>
         </div>
         <Card>
           <CardHeader>
-            <h3 className="text-xl font-semibold">Messages</h3>
+            <h3 className="text-xl font-semibold ">Messages</h3>
           </CardHeader>
         </Card>
       </div>
 
-      <Separator className="my-6" />
-      <div className="text-center">
-        <div className="mb-4">Get Your Message Board</div>
-        <Link href={"/sign-up"}>
-          <Button>Create Your Account</Button>
+      {isUserLoggedIn && (
+        <>
+          {" "}
+          <Separator className="my-6" />
+          <div className="text-center">
+            <div className="mb-4">Get Your Message Board</div>
+            <Link href={"/sign-up"}>
+              <Button>Create Your Account</Button>
+            </Link>
+          </div>
+        </>
+      )}
+
+      <span className="text-gray-500 font-bold">
+        <Link
+          href="/dashboard"
+          className="flex items-center space-x-1 transition duration-300 ease-in-out hover:text-gary-700 hover:scale-105"
+        >
+          <ChevronLeft className="h-5 w-5" />
+          <span>Go Back</span>
         </Link>
-      </div>
+      </span>
     </div>
   );
 }
