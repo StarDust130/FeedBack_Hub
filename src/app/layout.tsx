@@ -3,9 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/toaster";
+import Navbar from "@/components/ui/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 export const metadata: Metadata = {
   title: "Feedback Hub",
@@ -21,9 +21,10 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-black text-white">
       <AuthProvider>
         <body className={inter.className}>
+          <Navbar />
           {children}
           <Toaster />
         </body>
