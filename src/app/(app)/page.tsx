@@ -29,6 +29,7 @@ export default function Home() {
             True Feedback - Where your identity remains a secret.
           </p>
         </section>
+        <Image src={"/babu-man.gif"} alt="gif" width={"500"} height={"500"} />
 
         {/* Carousel for Messages */}
         <Carousel
